@@ -102,8 +102,10 @@ func main() {
 			EnableDiskUuid: pulumi.BoolPtr(true),
 			Clone:          vmCloneArgs,
 
-			NetworkInterfaces: vmNetworkInterfaces,
-			Disks:             vmDisks,
+			NetworkInterfaces:       vmNetworkInterfaces,
+			Disks:                   vmDisks,
+			WaitForGuestNetRoutable: pulumi.BoolPtr(false),
+			WaitForGuestNetTimeout:  pulumi.IntPtr(0),
 
 			Folder: pulumi.StringPtr(clusterID),
 		}
