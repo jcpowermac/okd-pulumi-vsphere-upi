@@ -1,8 +1,10 @@
 encryptionsalt: v1:l7tkX8HMMFo=:v1:h0SuBD84ugDEU5ym:xt/F0RmhnseROuDt0UNh07U6iTtl9w==
 config:
   okd-pulumi-vsphere-upi:cluster: devel
+  okd-pulumi-vsphere-upi:clusterID: jcallen-pulumi-test
   okd-pulumi-vsphere-upi:datacenter: dc1
   okd-pulumi-vsphere-upi:datastore: nvme-ds1
+  okd-pulumi-vsphere-upi:network: VM Network
   vsphere:password:
     secure: v1:MBKajVGow/mrp31j:l8FVs4MKY4wZz9r5ezRi3h7+v+A2hcdHAxredf7VYKE=
   vsphere:user: jcallen@e2e.local
