@@ -1,25 +1,39 @@
 package main
 
 import (
+	"github.com/davecgh/go-spew/spew"
+	installertypes "github.com/openshift/installer/pkg/types"
+	vspheretypes "github.com/openshift/installer/pkg/types/vsphere"
 	vsphere "github.com/pulumi/pulumi-vsphere/sdk/v2/go/vsphere"
 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi/config"
 )
+
+func newInstallConfig(conf *config.Config) *installertypes.InstallConfig {
+	ic := &installertypes.InstallConfig{}
+
+	ic.ObjectMeta.Name = conf.Require("clusterid")
+	ic.Platform.VSphere = &vspheretypes.Platform{
+		Datacenter:       conf.Require("datacenter"),
+		DefaultDatastore: conf.Require("datastore"),
+		Folder:           conf.Require("folder"),
+		Cluster:          conf.Require("cluster"),
+		Network:          conf.Require("network"),
+	}
+
+	return ic
+}
 
 func main() {
 
 	pulumi.Run(func(ctx *pulumi.Context) error {
 
 		conf := config.New(ctx, "")
+		ic := newInstallConfig(conf)
+		spew.Dump(ic)
 
-		datacenterName := conf.Require("datacenter")
-		clusterName := conf.Require("cluster")
-		datastoreName := conf.Require("datastore")
-		networkName := conf.Require("network")
-
-		clusterID := conf.Require("clusterID")
-
-		dc, err := vsphere.LookupDatacenter(ctx, &vsphere.LookupDatacenterArgs{Name: &datacenterName})
+		dc, err := vsphere.LookupDatacenter(ctx, &vsphere.LookupDatacenterArgs{
+			Name: &ic.Platform.VSphere.Datacenter})
 		if err != nil {
 			return err
 		}
@@ -27,7 +41,7 @@ func main() {
 		computeCluster, err := vsphere.LookupComputeCluster(ctx,
 			&vsphere.LookupComputeClusterArgs{
 				DatacenterId: &dc.Id,
-				Name:         clusterName,
+				Name:         ic.Platform.VSphere.Cluster,
 			})
 
 		if err != nil {
@@ -35,7 +49,7 @@ func main() {
 		}
 
 		datastore, err := vsphere.GetDatastore(ctx, &vsphere.GetDatastoreArgs{
-			Name:         datastoreName,
+			Name:         ic.Platform.VSphere.DefaultDatastore,
 			DatacenterId: &dc.Id,
 		})
 
@@ -44,12 +58,12 @@ func main() {
 		}
 
 		network, err := vsphere.GetNetwork(ctx, &vsphere.GetNetworkArgs{
-			Name:         networkName,
+			Name:         ic.Platform.VSphere.Network,
 			DatacenterId: &dc.Id,
 		})
 
-		resourcePool, err := vsphere.NewResourcePool(ctx, clusterID, &vsphere.ResourcePoolArgs{
-			Name:                 pulumi.StringPtr(clusterID),
+		resourcePool, err := vsphere.NewResourcePool(ctx, ic.ObjectMeta.Name, &vsphere.ResourcePoolArgs{
+			Name:                 pulumi.StringPtr(ic.ObjectMeta.Name),
 			ParentResourcePoolId: pulumi.String(computeCluster.ResourcePoolId),
 		})
 
@@ -57,8 +71,8 @@ func main() {
 			return nil
 		}
 
-		_, err = vsphere.NewFolder(ctx, clusterID, &vsphere.FolderArgs{
-			Path:         pulumi.String(clusterID),
+		_, err = vsphere.NewFolder(ctx, ic.ObjectMeta.Name, &vsphere.FolderArgs{
+			Path:         pulumi.String(ic.ObjectMeta.Name),
 			Type:         pulumi.String("vm"),
 			DatacenterId: pulumi.StringPtr(dc.Id),
 		})
@@ -107,7 +121,7 @@ func main() {
 			WaitForGuestNetRoutable: pulumi.BoolPtr(false),
 			WaitForGuestNetTimeout:  pulumi.IntPtr(0),
 
-			Folder: pulumi.StringPtr(clusterID),
+			Folder: pulumi.StringPtr(ic.Platform.VSphere.Folder),
 		}
 
 		_, err = vsphere.NewVirtualMachine(ctx, "jcallen-pulumi-test", vmArgs)
@@ -115,8 +129,6 @@ func main() {
 		if err != nil {
 			return err
 		}
-
-		//spew.Dump(vm)
 
 		return nil
 	})
