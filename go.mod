@@ -7,7 +7,8 @@ require (
 	github.com/coreos/ignition v0.35.0
 	github.com/davecgh/go-spew v1.1.1
 	github.com/openshift/installer v0.9.0-master.0.20200507004117-189b16eba4e0
-	github.com/pulumi/pulumi-vsphere/sdk/v2 v2.2.1
+	github.com/pkg/errors v0.9.1
+	github.com/pulumi/pulumi-vsphere/sdk/v2 v2.3.2
 	github.com/pulumi/pulumi/sdk/v2 v2.0.0
 	go4.org v0.0.0-20200411211856-f5505b9728dd // indirect
 	golang.org/x/tools v0.0.0-20200507172948-ff647943c706 // indirect

@@ -1591,8 +1591,8 @@ github.com/prometheus/procfs v0.0.3/go.mod h1:4A/X28fw3Fc593LaREMrKMqOKvUAntwMDa
 github.com/prometheus/procfs v0.0.5/go.mod h1:4A/X28fw3Fc593LaREMrKMqOKvUAntwMDaekg4FpcdQ=
 github.com/prometheus/procfs v0.0.8/go.mod h1:7Qr8sr6344vo1JqZ6HhLceV9o3AJ1Ff+GxbHq6oeK9A=
 github.com/prometheus/tsdb v0.7.1/go.mod h1:qhTCs0VvXwvX/y3TZrWD7rabWM+ijKTux40TwIPHuXU=
-github.com/pulumi/pulumi-vsphere/sdk/v2 v2.2.1 h1:cHNjJvb4Q5t2KATByPFFqzhiArQ2wETtMSz4xzQ9Fzs=
-github.com/pulumi/pulumi-vsphere/sdk/v2 v2.2.1/go.mod h1:Fl63StEKZDw71lKTzAbq6p5lXwFJDMI/O/AI/5G4rqE=
+github.com/pulumi/pulumi-vsphere/sdk/v2 v2.3.2 h1:sLdbeESQV7jpr9cOpYobvk3p+M5lj/kdTB6ST5E4u6Y=
+github.com/pulumi/pulumi-vsphere/sdk/v2 v2.3.2/go.mod h1:Fl63StEKZDw71lKTzAbq6p5lXwFJDMI/O/AI/5G4rqE=
 github.com/pulumi/pulumi/sdk/v2 v2.0.0 h1:3VMXbEo3bqeaU+YDt8ufVBLD0WhLYE3tG3t/nIZ3Iac=
 github.com/pulumi/pulumi/sdk/v2 v2.0.0/go.mod h1:W7k1UDYerc5o97mHnlHHp5iQZKEby+oQrQefWt+2RF4=
 github.com/quasilyte/go-consistent v0.0.0-20190521200055-c6f3937de18c/go.mod h1:5STLWrekHfjyYwxBRVRXNOSewLJ3PWfDJd1VyTS21fI=

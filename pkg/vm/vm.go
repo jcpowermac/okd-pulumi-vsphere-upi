@@ -9,6 +9,16 @@ import (
 	"github.com/pulumi/pulumi/sdk/v2/go/pulumi"
 )
 
+// InstanceType - Types of instances
+type InstanceType string
+
+//InstanceType enum
+const (
+	Bootstrap InstanceType = "bootstrap"
+	Master    InstanceType = "control-plane"
+	Worker    InstanceType = "compute"
+)
+
 // VirtualMachine - all the objects we need...
 type VirtualMachine struct {
 	Ctx *pulumi.Context
@@ -152,16 +162,6 @@ func NewVirtualMachine(ctx *pulumi.Context, ic *installertypes.InstallConfig) (*
 	}, nil
 }
 
-// InstanceType - Types of instances
-type InstanceType string
-
-//InstanceType enum
-const (
-	Bootstrap InstanceType = "bootstrap"
-	Master    InstanceType = "control-plane"
-	Worker    InstanceType = "compute"
-)
-
 /* TODO:
  * - ignition
  * - ip addressing
@@ -196,6 +196,11 @@ func (vm VirtualMachine) CreateCoreOSVirtualMachine(instanceType InstanceType, q
 		TemplateUuid: pulumi.String(templateVM.Id),
 	}
 
+	//"guestinfo.ignition.config.data"          = base64encode(data.ignition_config.ign[each.key].rendered)
+	extraConfigs := pulumi.StringMap{
+		"guestinfo.ignition.config.data.encoding": pulumi.String("base64"),
+	}
+
 	vmArgs := &vsphere.VirtualMachineArgs{
 		Name:           pulumi.StringPtr("jcallen-pulumi-test"),
 		ResourcePoolId: vm.ResourcePool.ID(),
@@ -211,7 +216,8 @@ func (vm VirtualMachine) CreateCoreOSVirtualMachine(instanceType InstanceType, q
 		WaitForGuestNetRoutable: pulumi.BoolPtr(false),
 		WaitForGuestNetTimeout:  pulumi.IntPtr(0),
 
-		Folder: vm.Folder.Path,
+		Folder:      vm.Folder.Path,
+		ExtraConfig: extraConfigs,
 	}
 
 	_, err = vsphere.NewVirtualMachine(vm.Ctx, "jcallen-pulumi-test", vmArgs)
@@ -221,4 +227,47 @@ func (vm VirtualMachine) CreateCoreOSVirtualMachine(instanceType InstanceType, q
 	}
 
 	return nil
+}
+
+// CreateCoreOSTemplate - create the template virtual machine
+func (vm VirtualMachine) CreateCoreOSTemplate(localOvfPath, version string) error {
+
+	vmNetworkInterfaces := vsphere.VirtualMachineNetworkInterfaceArray{
+		vsphere.VirtualMachineNetworkInterfaceArgs{
+			NetworkId: pulumi.String(vm.Network.Id),
+		},
+	}
+
+	vmOvfDeploy := vsphere.VirtualMachineOvfDeployArgs{
+		LocalOvfPath: pulumi.String(localOvfPath),
+	}
+
+	vmArgs := &vsphere.VirtualMachineArgs{
+		Name:           pulumi.StringPtr("rhcos"),
+		ResourcePoolId: vm.ResourcePool.ID(),
+		DatastoreId:    pulumi.StringPtr(vm.Datastore.Id),
+		NumCpus:        pulumi.IntPtr(1),
+		Memory:         pulumi.IntPtr(1024),
+		GuestId:        pulumi.StringPtr("rhel7_64Guest"),
+		EnableDiskUuid: pulumi.BoolPtr(true),
+
+		NetworkInterfaces:       vmNetworkInterfaces,
+		WaitForGuestNetRoutable: pulumi.BoolPtr(false),
+		WaitForGuestNetTimeout:  pulumi.IntPtr(0),
+
+		Folder:    vm.Folder.Path,
+		OvfDeploy: vmOvfDeploy,
+	}
+
+	virtualMachine, err := vsphere.NewVirtualMachine(vm.Ctx, "jcallen-pulumi-test", vmArgs)
+
+	if err != nil {
+		return err
+	}
+
+	spew.Dump(virtualMachine)
+
+	spew.Dump(vmArgs)
+	return nil
+
 }

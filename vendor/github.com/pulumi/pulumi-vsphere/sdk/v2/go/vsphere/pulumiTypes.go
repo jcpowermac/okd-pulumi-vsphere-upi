@@ -497,7 +497,11 @@ type VirtualMachineCdrom struct {
 	ClientDevice *bool `pulumi:"clientDevice"`
 	// The datastore ID that the ISO is located in.
 	// Requried for using a datastore ISO. Conflicts with `clientDevice`.
-	DatastoreId   *string `pulumi:"datastoreId"`
+	DatastoreId *string `pulumi:"datastoreId"`
+	// An address internal to this provider that helps locate the
+	// device when `key` is unavailable. This follows a convention of
+	// `CONTROLLER_TYPE:BUS_NUMBER:UNIT_NUMBER`. Example: `scsi:0:1` means device
+	// unit 1 on SCSI bus 0.
 	DeviceAddress *string `pulumi:"deviceAddress"`
 	// The ID of the device within the virtual machine.
 	Key *int `pulumi:"key"`
@@ -524,7 +528,11 @@ type VirtualMachineCdromArgs struct {
 	ClientDevice pulumi.BoolPtrInput `pulumi:"clientDevice"`
 	// The datastore ID that the ISO is located in.
 	// Requried for using a datastore ISO. Conflicts with `clientDevice`.
-	DatastoreId   pulumi.StringPtrInput `pulumi:"datastoreId"`
+	DatastoreId pulumi.StringPtrInput `pulumi:"datastoreId"`
+	// An address internal to this provider that helps locate the
+	// device when `key` is unavailable. This follows a convention of
+	// `CONTROLLER_TYPE:BUS_NUMBER:UNIT_NUMBER`. Example: `scsi:0:1` means device
+	// unit 1 on SCSI bus 0.
 	DeviceAddress pulumi.StringPtrInput `pulumi:"deviceAddress"`
 	// The ID of the device within the virtual machine.
 	Key pulumi.IntPtrInput `pulumi:"key"`
@@ -623,6 +631,10 @@ func (o VirtualMachineCdromOutput) DatastoreId() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v VirtualMachineCdrom) *string { return v.DatastoreId }).(pulumi.StringPtrOutput)
 }
 
+// An address internal to this provider that helps locate the
+// device when `key` is unavailable. This follows a convention of
+// `CONTROLLER_TYPE:BUS_NUMBER:UNIT_NUMBER`. Example: `scsi:0:1` means device
+// unit 1 on SCSI bus 0.
 func (o VirtualMachineCdromOutput) DeviceAddress() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v VirtualMachineCdrom) *string { return v.DeviceAddress }).(pulumi.StringPtrOutput)
 }
@@ -678,6 +690,10 @@ func (o VirtualMachineCdromPtrOutput) DatastoreId() pulumi.StringPtrOutput {
 	}).(pulumi.StringPtrOutput)
 }
 
+// An address internal to this provider that helps locate the
+// device when `key` is unavailable. This follows a convention of
+// `CONTROLLER_TYPE:BUS_NUMBER:UNIT_NUMBER`. Example: `scsi:0:1` means device
+// unit 1 on SCSI bus 0.
 func (o VirtualMachineCdromPtrOutput) DeviceAddress() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *VirtualMachineCdrom) *string {
 		if v == nil {
@@ -1791,7 +1807,11 @@ type VirtualMachineDisk struct {
 	Attach *bool `pulumi:"attach"`
 	// The datastore ID that the ISO is located in.
 	// Requried for using a datastore ISO. Conflicts with `clientDevice`.
-	DatastoreId   *string `pulumi:"datastoreId"`
+	DatastoreId *string `pulumi:"datastoreId"`
+	// An address internal to this provider that helps locate the
+	// device when `key` is unavailable. This follows a convention of
+	// `CONTROLLER_TYPE:BUS_NUMBER:UNIT_NUMBER`. Example: `scsi:0:1` means device
+	// unit 1 on SCSI bus 0.
 	DeviceAddress *string `pulumi:"deviceAddress"`
 	// The mode of this this virtual disk for purposes of
 	// writes and snapshotting. Can be one of `append`, `independentNonpersistent`,
@@ -1875,7 +1895,11 @@ type VirtualMachineDiskArgs struct {
 	Attach pulumi.BoolPtrInput `pulumi:"attach"`
 	// The datastore ID that the ISO is located in.
 	// Requried for using a datastore ISO. Conflicts with `clientDevice`.
-	DatastoreId   pulumi.StringPtrInput `pulumi:"datastoreId"`
+	DatastoreId pulumi.StringPtrInput `pulumi:"datastoreId"`
+	// An address internal to this provider that helps locate the
+	// device when `key` is unavailable. This follows a convention of
+	// `CONTROLLER_TYPE:BUS_NUMBER:UNIT_NUMBER`. Example: `scsi:0:1` means device
+	// unit 1 on SCSI bus 0.
 	DeviceAddress pulumi.StringPtrInput `pulumi:"deviceAddress"`
 	// The mode of this this virtual disk for purposes of
 	// writes and snapshotting. Can be one of `append`, `independentNonpersistent`,
@@ -2005,6 +2029,10 @@ func (o VirtualMachineDiskOutput) DatastoreId() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v VirtualMachineDisk) *string { return v.DatastoreId }).(pulumi.StringPtrOutput)
 }
 
+// An address internal to this provider that helps locate the
+// device when `key` is unavailable. This follows a convention of
+// `CONTROLLER_TYPE:BUS_NUMBER:UNIT_NUMBER`. Example: `scsi:0:1` means device
+// unit 1 on SCSI bus 0.
 func (o VirtualMachineDiskOutput) DeviceAddress() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v VirtualMachineDisk) *string { return v.DeviceAddress }).(pulumi.StringPtrOutput)
 }
@@ -2161,15 +2189,19 @@ type VirtualMachineNetworkInterface struct {
 	// this interface. Can be one of `low`, `normal`, `high`, or `custom`. Default:
 	// `normal`.
 	BandwidthShareLevel *string `pulumi:"bandwidthShareLevel"`
-	DeviceAddress       *string `pulumi:"deviceAddress"`
+	// An address internal to this provider that helps locate the
+	// device when `key` is unavailable. This follows a convention of
+	// `CONTROLLER_TYPE:BUS_NUMBER:UNIT_NUMBER`. Example: `scsi:0:1` means device
+	// unit 1 on SCSI bus 0.
+	DeviceAddress *string `pulumi:"deviceAddress"`
 	// The ID of the device within the virtual machine.
 	Key *int `pulumi:"key"`
 	// The MAC address of this network interface. Can
 	// only be manually set if `useStaticMac` is true, otherwise this is a
 	// computed value that gives the current MAC address of this interface.
 	MacAddress *string `pulumi:"macAddress"`
-	// The [managed object reference
-	// ID][docs-about-morefs] of the network to connect this interface to.
+	// The managed object reference
+	// ID of the network to connect this interface to.
 	NetworkId string `pulumi:"networkId"`
 	// Specifies which OVF NIC the `networkInterface`
 	// should be associated with. Only applies at creation and only when deploying
@@ -2210,15 +2242,19 @@ type VirtualMachineNetworkInterfaceArgs struct {
 	// this interface. Can be one of `low`, `normal`, `high`, or `custom`. Default:
 	// `normal`.
 	BandwidthShareLevel pulumi.StringPtrInput `pulumi:"bandwidthShareLevel"`
-	DeviceAddress       pulumi.StringPtrInput `pulumi:"deviceAddress"`
+	// An address internal to this provider that helps locate the
+	// device when `key` is unavailable. This follows a convention of
+	// `CONTROLLER_TYPE:BUS_NUMBER:UNIT_NUMBER`. Example: `scsi:0:1` means device
+	// unit 1 on SCSI bus 0.
+	DeviceAddress pulumi.StringPtrInput `pulumi:"deviceAddress"`
 	// The ID of the device within the virtual machine.
 	Key pulumi.IntPtrInput `pulumi:"key"`
 	// The MAC address of this network interface. Can
 	// only be manually set if `useStaticMac` is true, otherwise this is a
 	// computed value that gives the current MAC address of this interface.
 	MacAddress pulumi.StringPtrInput `pulumi:"macAddress"`
-	// The [managed object reference
-	// ID][docs-about-morefs] of the network to connect this interface to.
+	// The managed object reference
+	// ID of the network to connect this interface to.
 	NetworkId pulumi.StringInput `pulumi:"networkId"`
 	// Specifies which OVF NIC the `networkInterface`
 	// should be associated with. Only applies at creation and only when deploying
@@ -2313,6 +2349,10 @@ func (o VirtualMachineNetworkInterfaceOutput) BandwidthShareLevel() pulumi.Strin
 	return o.ApplyT(func(v VirtualMachineNetworkInterface) *string { return v.BandwidthShareLevel }).(pulumi.StringPtrOutput)
 }
 
+// An address internal to this provider that helps locate the
+// device when `key` is unavailable. This follows a convention of
+// `CONTROLLER_TYPE:BUS_NUMBER:UNIT_NUMBER`. Example: `scsi:0:1` means device
+// unit 1 on SCSI bus 0.
 func (o VirtualMachineNetworkInterfaceOutput) DeviceAddress() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v VirtualMachineNetworkInterface) *string { return v.DeviceAddress }).(pulumi.StringPtrOutput)
 }
@@ -2329,8 +2369,8 @@ func (o VirtualMachineNetworkInterfaceOutput) MacAddress() pulumi.StringPtrOutpu
 	return o.ApplyT(func(v VirtualMachineNetworkInterface) *string { return v.MacAddress }).(pulumi.StringPtrOutput)
 }
 
-// The [managed object reference
-// ID][docs-about-morefs] of the network to connect this interface to.
+// The managed object reference
+// ID of the network to connect this interface to.
 func (o VirtualMachineNetworkInterfaceOutput) NetworkId() pulumi.StringOutput {
 	return o.ApplyT(func(v VirtualMachineNetworkInterface) string { return v.NetworkId }).(pulumi.StringOutput)
 }
@@ -2367,6 +2407,209 @@ func (o VirtualMachineNetworkInterfaceArrayOutput) Index(i pulumi.IntInput) Virt
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) VirtualMachineNetworkInterface {
 		return vs[0].([]VirtualMachineNetworkInterface)[vs[1].(int)]
 	}).(VirtualMachineNetworkInterfaceOutput)
+}
+
+type VirtualMachineOvfDeploy struct {
+	DiskProvisioning   *string           `pulumi:"diskProvisioning"`
+	IpAllocationPolicy *string           `pulumi:"ipAllocationPolicy"`
+	IpProtocol         *string           `pulumi:"ipProtocol"`
+	LocalOvfPath       *string           `pulumi:"localOvfPath"`
+	OvfNetworkMap      map[string]string `pulumi:"ovfNetworkMap"`
+	RemoteOvfUrl       *string           `pulumi:"remoteOvfUrl"`
+}
+
+// VirtualMachineOvfDeployInput is an input type that accepts VirtualMachineOvfDeployArgs and VirtualMachineOvfDeployOutput values.
+// You can construct a concrete instance of `VirtualMachineOvfDeployInput` via:
+//
+// 		 VirtualMachineOvfDeployArgs{...}
+//
+type VirtualMachineOvfDeployInput interface {
+	pulumi.Input
+
+	ToVirtualMachineOvfDeployOutput() VirtualMachineOvfDeployOutput
+	ToVirtualMachineOvfDeployOutputWithContext(context.Context) VirtualMachineOvfDeployOutput
+}
+
+type VirtualMachineOvfDeployArgs struct {
+	DiskProvisioning   pulumi.StringPtrInput `pulumi:"diskProvisioning"`
+	IpAllocationPolicy pulumi.StringPtrInput `pulumi:"ipAllocationPolicy"`
+	IpProtocol         pulumi.StringPtrInput `pulumi:"ipProtocol"`
+	LocalOvfPath       pulumi.StringPtrInput `pulumi:"localOvfPath"`
+	OvfNetworkMap      pulumi.StringMapInput `pulumi:"ovfNetworkMap"`
+	RemoteOvfUrl       pulumi.StringPtrInput `pulumi:"remoteOvfUrl"`
+}
+
+func (VirtualMachineOvfDeployArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*VirtualMachineOvfDeploy)(nil)).Elem()
+}
+
+func (i VirtualMachineOvfDeployArgs) ToVirtualMachineOvfDeployOutput() VirtualMachineOvfDeployOutput {
+	return i.ToVirtualMachineOvfDeployOutputWithContext(context.Background())
+}
+
+func (i VirtualMachineOvfDeployArgs) ToVirtualMachineOvfDeployOutputWithContext(ctx context.Context) VirtualMachineOvfDeployOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(VirtualMachineOvfDeployOutput)
+}
+
+func (i VirtualMachineOvfDeployArgs) ToVirtualMachineOvfDeployPtrOutput() VirtualMachineOvfDeployPtrOutput {
+	return i.ToVirtualMachineOvfDeployPtrOutputWithContext(context.Background())
+}
+
+func (i VirtualMachineOvfDeployArgs) ToVirtualMachineOvfDeployPtrOutputWithContext(ctx context.Context) VirtualMachineOvfDeployPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(VirtualMachineOvfDeployOutput).ToVirtualMachineOvfDeployPtrOutputWithContext(ctx)
+}
+
+// VirtualMachineOvfDeployPtrInput is an input type that accepts VirtualMachineOvfDeployArgs, VirtualMachineOvfDeployPtr and VirtualMachineOvfDeployPtrOutput values.
+// You can construct a concrete instance of `VirtualMachineOvfDeployPtrInput` via:
+//
+// 		 VirtualMachineOvfDeployArgs{...}
+//
+//  or:
+//
+// 		 nil
+//
+type VirtualMachineOvfDeployPtrInput interface {
+	pulumi.Input
+
+	ToVirtualMachineOvfDeployPtrOutput() VirtualMachineOvfDeployPtrOutput
+	ToVirtualMachineOvfDeployPtrOutputWithContext(context.Context) VirtualMachineOvfDeployPtrOutput
+}
+
+type virtualMachineOvfDeployPtrType VirtualMachineOvfDeployArgs
+
+func VirtualMachineOvfDeployPtr(v *VirtualMachineOvfDeployArgs) VirtualMachineOvfDeployPtrInput {
+	return (*virtualMachineOvfDeployPtrType)(v)
+}
+
+func (*virtualMachineOvfDeployPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**VirtualMachineOvfDeploy)(nil)).Elem()
+}
+
+func (i *virtualMachineOvfDeployPtrType) ToVirtualMachineOvfDeployPtrOutput() VirtualMachineOvfDeployPtrOutput {
+	return i.ToVirtualMachineOvfDeployPtrOutputWithContext(context.Background())
+}
+
+func (i *virtualMachineOvfDeployPtrType) ToVirtualMachineOvfDeployPtrOutputWithContext(ctx context.Context) VirtualMachineOvfDeployPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(VirtualMachineOvfDeployPtrOutput)
+}
+
+type VirtualMachineOvfDeployOutput struct{ *pulumi.OutputState }
+
+func (VirtualMachineOvfDeployOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*VirtualMachineOvfDeploy)(nil)).Elem()
+}
+
+func (o VirtualMachineOvfDeployOutput) ToVirtualMachineOvfDeployOutput() VirtualMachineOvfDeployOutput {
+	return o
+}
+
+func (o VirtualMachineOvfDeployOutput) ToVirtualMachineOvfDeployOutputWithContext(ctx context.Context) VirtualMachineOvfDeployOutput {
+	return o
+}
+
+func (o VirtualMachineOvfDeployOutput) ToVirtualMachineOvfDeployPtrOutput() VirtualMachineOvfDeployPtrOutput {
+	return o.ToVirtualMachineOvfDeployPtrOutputWithContext(context.Background())
+}
+
+func (o VirtualMachineOvfDeployOutput) ToVirtualMachineOvfDeployPtrOutputWithContext(ctx context.Context) VirtualMachineOvfDeployPtrOutput {
+	return o.ApplyT(func(v VirtualMachineOvfDeploy) *VirtualMachineOvfDeploy {
+		return &v
+	}).(VirtualMachineOvfDeployPtrOutput)
+}
+func (o VirtualMachineOvfDeployOutput) DiskProvisioning() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VirtualMachineOvfDeploy) *string { return v.DiskProvisioning }).(pulumi.StringPtrOutput)
+}
+
+func (o VirtualMachineOvfDeployOutput) IpAllocationPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VirtualMachineOvfDeploy) *string { return v.IpAllocationPolicy }).(pulumi.StringPtrOutput)
+}
+
+func (o VirtualMachineOvfDeployOutput) IpProtocol() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VirtualMachineOvfDeploy) *string { return v.IpProtocol }).(pulumi.StringPtrOutput)
+}
+
+func (o VirtualMachineOvfDeployOutput) LocalOvfPath() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VirtualMachineOvfDeploy) *string { return v.LocalOvfPath }).(pulumi.StringPtrOutput)
+}
+
+func (o VirtualMachineOvfDeployOutput) OvfNetworkMap() pulumi.StringMapOutput {
+	return o.ApplyT(func(v VirtualMachineOvfDeploy) map[string]string { return v.OvfNetworkMap }).(pulumi.StringMapOutput)
+}
+
+func (o VirtualMachineOvfDeployOutput) RemoteOvfUrl() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v VirtualMachineOvfDeploy) *string { return v.RemoteOvfUrl }).(pulumi.StringPtrOutput)
+}
+
+type VirtualMachineOvfDeployPtrOutput struct{ *pulumi.OutputState }
+
+func (VirtualMachineOvfDeployPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**VirtualMachineOvfDeploy)(nil)).Elem()
+}
+
+func (o VirtualMachineOvfDeployPtrOutput) ToVirtualMachineOvfDeployPtrOutput() VirtualMachineOvfDeployPtrOutput {
+	return o
+}
+
+func (o VirtualMachineOvfDeployPtrOutput) ToVirtualMachineOvfDeployPtrOutputWithContext(ctx context.Context) VirtualMachineOvfDeployPtrOutput {
+	return o
+}
+
+func (o VirtualMachineOvfDeployPtrOutput) Elem() VirtualMachineOvfDeployOutput {
+	return o.ApplyT(func(v *VirtualMachineOvfDeploy) VirtualMachineOvfDeploy { return *v }).(VirtualMachineOvfDeployOutput)
+}
+
+func (o VirtualMachineOvfDeployPtrOutput) DiskProvisioning() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *VirtualMachineOvfDeploy) *string {
+		if v == nil {
+			return nil
+		}
+		return v.DiskProvisioning
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o VirtualMachineOvfDeployPtrOutput) IpAllocationPolicy() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *VirtualMachineOvfDeploy) *string {
+		if v == nil {
+			return nil
+		}
+		return v.IpAllocationPolicy
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o VirtualMachineOvfDeployPtrOutput) IpProtocol() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *VirtualMachineOvfDeploy) *string {
+		if v == nil {
+			return nil
+		}
+		return v.IpProtocol
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o VirtualMachineOvfDeployPtrOutput) LocalOvfPath() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *VirtualMachineOvfDeploy) *string {
+		if v == nil {
+			return nil
+		}
+		return v.LocalOvfPath
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o VirtualMachineOvfDeployPtrOutput) OvfNetworkMap() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *VirtualMachineOvfDeploy) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.OvfNetworkMap
+	}).(pulumi.StringMapOutput)
+}
+
+func (o VirtualMachineOvfDeployPtrOutput) RemoteOvfUrl() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *VirtualMachineOvfDeploy) *string {
+		if v == nil {
+			return nil
+		}
+		return v.RemoteOvfUrl
+	}).(pulumi.StringPtrOutput)
 }
 
 type VirtualMachineVapp struct {
@@ -3019,6 +3262,8 @@ func init() {
 	pulumi.RegisterOutputType(VirtualMachineDiskArrayOutput{})
 	pulumi.RegisterOutputType(VirtualMachineNetworkInterfaceOutput{})
 	pulumi.RegisterOutputType(VirtualMachineNetworkInterfaceArrayOutput{})
+	pulumi.RegisterOutputType(VirtualMachineOvfDeployOutput{})
+	pulumi.RegisterOutputType(VirtualMachineOvfDeployPtrOutput{})
 	pulumi.RegisterOutputType(VirtualMachineVappOutput{})
 	pulumi.RegisterOutputType(VirtualMachineVappPtrOutput{})
 	pulumi.RegisterOutputType(VnicIpv4Output{})
